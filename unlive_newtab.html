@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<meta charset="utf-8"/>
+<html lang="en" class=" no-js lang_eng ">
+
+<head>
+<title>Un-Live Newtab</title>
+<!--Begin "embedded .css file"    -->
+<!--The .css file is "embedded" to simplify promulgation.  It's all just one file (this file).   -->
+
+<!-- #66b5ff #7967ff #E9B96E  #66cc66  STANDBY COLORS!! -->  
+<style>
+body {  background-color: #bbb;   }
+
+.buttonText {
+  font-family: Courier New;
+  font-size: 18px;
+  color: black;
+  display:inline;
+}
+.startButtonText {
+  font-family: Courier New;
+  color: black;
+  display:inline;
+  background-color: LightGreen;
+}
+input[type=number]{
+    width: 30px;
+}
+</style>
+<!--End "embedded .css file"--></head>
+
+<body>
+
+<span STYLE="font-family: Courier New; font-size: 24px; color: black">
+<b><u>Un-Live Newtab</u></b><small> (No-phone-nothin')</small></span>
+<span STYLE="font-family: Courier New; font-size: 18px; color: black">&nbsp;&nbsp;by Endlessskyway,&nbsp;Aug 2019&nbsp;&nbsp;&nbsp;</span>
+
+<input id="autogo_toggle_button" type="button" onclick="set_autogo('toggle')" title="This parameter tells whether to automatically GO to the URL after forming it."
+value="INitIal_string (error)" STYLE="font-family: Courier New; font-size: 12px; color: #000; background-color: #ccc;  width:105px; height:24px"/>
+
+<input id="gonewtab_toggle_button" type="button" onclick="set_gonewtab('toggle')"
+value="INitIal_string (error)" STYLE="font-family: Courier New; font-size: 12px; color: #000; background-color: #ccc;  width:135px; height:24px"/>
+
+<br>
+<br>
+<br>
+<b><big>Search box</big></b>&nbsp;
+<!--<input type="button" onclick="just_select('search_box')" value="Select" STYLE="height:26px"/>  -->
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="copy_to_clipboard('search_box')" value="Copy box" />
+<!--<input type="button" onclick="paste('search_box')" value="paste" STYLE="height:26px"/> -->
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_selected_text('search_box')" value="Del" />
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_unselected_text('search_box')" value="Trim" />
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="clear_register('search_box')" value="Clear box" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!--<input type="button" onclick="rid_trailing_CRs('search_box')" value="rid_trailing_CRs('search_box')" STYLE="height:26px"/> -->
+<input type="button" onclick="append_to_test_area('search_box')" id="append_button_search" value="Append to test" style="background-color:#088; color:#fff; height:26px"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" style="background-color:#ccc; color:#000; font-family: Courier New; font-size: 14px; width:200px; height:35px" onclick="clear_register('search_box');clear_register('url_box');clear_register('test_box'); document.getElementById('search_box').focus();"
+ value="Clear all boxes" />
+<br>
+<textarea id="search_box"  autofocus="autofocus" onkeypress="go_on_Enter(event, 'search_box'); " STYLE="font-family: Courier New; font-size: 18px; color: #000; background-color: #eee"
+placeholder="Search box" rows="2" cols="91" wrap="on" title = "Enter your search text here." ></textarea>
+<br>
+<input type="button" onclick="searcho('SP'); if(autogo_global)go();" value="Startpage URL + AutoGO" STYLE="background-color:#ffa; color:#000; width:700px; height:50px" title="Form the URL, then either [stop] or [go on to the URL] depending on the 'autoGO' state." />
+<input type="button" onclick="searcho('DDG'); if(autogo_global)go();" value="DDG URL + AutoGO" STYLE="background-color:#ffa; color:#000; width:150px; height:50px" title="Form the URL, then either [stop] or [go on to the URL] depending on the 'autoGO' state."/>
+<input type="button" onclick="searcho('YT');" value="YT URL" STYLE="background-color:#ffa; color:#000; width:100px; height:50px" title="Form the URL, then [stop]."/>
+<input type="button" onclick="searcho('GOG')" value="NO!" STYLE="width:50px" title="Noooooooo!!!"/>
+<br>
+<br>
+<br>
+<br>
+<b><big>URL box</big></b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!--<input type="button" onclick="just_select('url_box')" value="Select" STYLE="height:26px"/>  -->
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="copy_to_clipboard('url_box')" value="Copy box"  />
+<!--<input type="button" onclick="paste('url_box')" value="paste" STYLE="height:26px"/> -->
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_selected_text('url_box')" value="Del" />
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_unselected_text('url_box')" value="Trim" />
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="clear_register('url_box')" value="Clear box"  />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" onclick="append_to_test_area('url_box')" value="Append to test" style="background-color:#088; color:#fff; height:26px"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" style="background-color:#ffa; color:#000; width:420px; height:35px" onclick="go()" value="GO"  />
+<br>
+<textarea id="url_box"  placeholder="URL box"  STYLE="font-family: Courier New; font-size: 18px; color: #000; background-color: #eee"
+rows="2" cols="91" wrap="on" title = "The formatted URL" ></textarea>
+<br>
+<br>
+<br>
+<br>
+<b><big>Test box</big></b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<!--<input type="button" onclick="just_select('test_box')" value="Select" STYLE="height:26px"/> -->
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="copy_to_clipboard('test_box')" value="Copy box"  />
+<!--<input type="button" onclick="paste('test_box')" value="paste" STYLE="height:26px"/> -->
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_selected_text('test_box')" value="Del" />
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_unselected_text('test_box')" value="Trim" />
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="clear_register('test_box')" value="Clear box"  />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="add_CR('test_box')" value="add CR"  STYLE="width:70px; height:35px"/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+<input type="button" onclick="d_save_or_copy_state('save');" value="Save state to file"  style="background-color:#ccc; color:#000; font-family: Courier New; font-size: 14px; height:35px; width:200px; "/>
+<input type="button" onclick="d_save_or_copy_state('copy');" value="Copy state to clipboard"  style="background-color:#ccc; color:#000; font-family: Courier New; font-size: 14px; height:35px; width:200px; "/><br>
+<textarea id="test_box"  STYLE="font-family: Courier New; font-size: 16px; color: #000; background-color: #eee"
+placeholder="Test box" rows="16" cols="100" wrap="on"  ></textarea>
+<br>
+<br>
+
+<!--
+<div style="font-size:20px color: #050; background-color: #eef; width:1000px;height:1500px;"  contenteditable >
+Additional editable space for rich text and non-text...
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+-->
+
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+"use strict";
+var autogo_global = true; // indicates whether to "GO" automatically or to wait for pushing the "GO" button
+set_autogo("true"); // sets up default and writes the button text accordingly
+var gonewtab_global = true; // indicates whether to "GO" to a new tabe or the same tab
+set_gonewtab("true"); // sets up default and writes the button text accordingly
+
+function searcho(engine){
+    var lead = "https://www.startpage.com/sp/search?q="; // default = Startpage.com
+    var tail = "";
+    if (engine == "SP") { lead = "https://www.startpage.com/sp/search?q="; tail = ""; }
+    if (engine == "DDG") { lead = "https://duckduckgo.com/?q="; tail = "&ia=web"; }
+    if (engine == "YT") lead = "https://www.youtube.com/results?search_query=";
+    if (engine == "GOG") lead = "https://www.google.com/search?q=";
+//    if (engine == "SP") lead = "https://www.startpage.com/do/asearch?q=";
+
+//    var in_data_from_form =  remove_trailing_CRs(document.getElementById("search_box").value);
+    var in_data_from_form =  rid_trailing_CRs("search_box");;
+    //alert ("IIIIIIIIIIIII  in_data_from_form=" + in_data_from_form );
+    document.getElementById("search_box").value = in_data_from_form;  // limits the number of CRs in the display to ne and sent to zero
+    var append = encodeURIComponent(in_data_from_form);
+    append = append.replace(/%20/g, "+"); // I like "+" better than "%20 because it's more normal, less ability to fingerprint
+
+    //
+
+    var send = lead + append + tail;
+    document.getElementById("url_box").value = send;
+    return;
+    }
+
+function go(){
+    var in_data_from_form = document.getElementById("url_box").value;
+    if (gonewtab_global)
+        { window.open(in_data_from_form); } // in new tab
+        else
+        { window.open(in_data_from_form,"_self"); }  // in same tab
+    return;
+    }
+
+function go_on_Enter(event, box_id) {
+    if (box_id != "search_box") return;
+    var key;
+    var str, len;
+    if ( window.event ) { key = event.keyCode; } // IE            
+      else
+      { if( event.which ){ key = event.which; } // Netscape/FF/Opera
+          else
+        {return; }
+      }
+    // check for "enter"
+    if (key == 13 || key == 10) { 
+       searcho("SP");
+       if(autogo_global) go();  }
+    return;
+    }
+
+function rid_trailing_CRs(box_id) {
+    // get rid of extraneous carriage return.
+    // The onkeypress runs COMPLETELY (including the go() function) -- BEFORE the "pressed" character is added to the .value.
+    // That makes it difficult to clear the new CR from there because the go() function essentially stops execution.
+    // That all leads to extra CRs being added to the end of the text afterward, which this trims off.
+    var str = document.getElementById(box_id).value;
+    str = remove_trailing_CRs(str);
+    document.getElementById(box_id).value = str;
+    document.getElementById(box_id).focus();
+    return str;
+    }
+
+var nremoved_global = 0;
+function remove_trailing_CRs(str) {
+    // get rid of extraneous carriage returns.
+    var original_str = str;
+    var last = str.substring( str.length-1, str.length);
+    while( last == String.fromCharCode(10) || last == String.fromCharCode(13) )
+        {
+        str = str.substring(0, str.length-1);
+        last = str.substring( str.length-1, str.length);
+        }
+    nremoved_global = original_str.length - str.length;
+    return str;
+    }
+
+function clear_register(box_id){
+    document.getElementById(box_id).value = "";
+    document.getElementById(box_id).focus();
+    return;
+    }
+
+function copy_to_clipboard(box_id){
+    document.getElementById(box_id).select();
+    document.execCommand("copy");
+    document.getElementById(box_id).focus();
+    return;
+    }
+function copy_string_to_clipboard(instring){
+    // A cheezy way of doing it by borrowing the test_box for the moment.
+    // Maybe make an invisible text area to o this in, but that can be sleazy (vs. cheezy).
+    // This rusults in the focus moving to the test box -- leave it for now.
+    var temp =  document.getElementById("test_box").value;
+    document.getElementById("test_box").value = instring;
+    copy_to_clipboard("test_box");
+    document.getElementById("test_box").value = temp;
+    return;
+    }
+function just_select(box_id) {
+  document.getElementById(box_id).select();
+}
+
+//function paste(box_id){
+//    clear_register(box_id);
+//    document.getElementById(box_id).select();
+//    document.execCommand("paste");
+//    return;
+//    }
+function paste(box_id) {
+  var pasteText = document.querySelector("#output");
+  pasteText.focus();
+  document.execCommand("paste");
+  console.log(pasteText.textContent);
+  document.getElementById(box_id).value = pasteText.textContent;
+}
+
+function delete_selected_text(box_id){
+    var box = document.getElementById(box_id);
+    var start = box.selectionStart; var end = box.selectionEnd; var len = box.value.length;
+    box.value = box.value.substring(0 ,start)  + box.value.substring(end, len);
+    return;
+    }
+
+function delete_unselected_text(box_id){
+    var box = document.getElementById(box_id);
+    var start = box.selectionStart; var end = box.selectionEnd;
+    box.value = box.value.substring(start, end);
+    return;
+    }
+
+function add_CR(box_id){
+    var box = document.getElementById(box_id);
+    var start = box.selectionStart;
+    box.value = box.value.substring(0, start ) + String.fromCharCode(13) + box.value.substring(start, box.value.length);
+    return;
+    }
+
+
+function set_autogo(setstate){ // string input
+    autogo_global = set_or_toggle("autogo_global", setstate);
+    if (autogo_global) {
+        //document.getElementById("test_box").value = document.getElementById("test_box").value + "\nAutoGO is ON ";
+        document.getElementById("autogo_toggle_button").value = "AutoGO is ON ";
+        }
+        else {
+        //document.getElementById("test_box").value = document.getElementById("test_box").value + "\nAutoGO is OFF ";
+        document.getElementById("autogo_toggle_button").value = "AutoGO is OFF";
+        }
+    return;
+    }
+function set_gonewtab(setstate){ // string input
+
+    gonewtab_global = set_or_toggle("gonewtab_global", setstate);
+    if (gonewtab_global) {
+        //document.getElementById("test_box").value = document.getElementById("test_box").value + "\nGOtoNEWtab is ON ";
+        document.getElementById("gonewtab_toggle_button").value = "GOtoNEWtab is ON ";
+        }
+        else {
+        //document.getElementById("test_box").value = document.getElementById("test_box").value + "\nGOtoNEWtab is OFF ";
+        document.getElementById("gonewtab_toggle_button").value = "GOtoNEWtab is OFF";
+        }
+    return;
+    }
+function set_or_toggle(parameter, setstate){ // string input
+   var param_orig, param_new;
+    if (parameter == "autogo_global") param_orig = autogo_global;
+    if (parameter == "gonewtab_global") param_orig = gonewtab_global;
+    var toggle = false; // boolean
+    if (setstate == "toggle") toggle = true;
+    if (toggle) {
+        if (param_orig == true) param_new = false;
+        if (param_orig == false) param_new = true;
+        }
+        else {
+        if (setstate == "true") param_new = true; else param_new = false;
+        }
+    return param_new;
+    }
+
+
+function d_save_or_copy_state(which) {
+  // which == "save" or "copy" or "both"
+  var save = false; var copy = false;
+  if (which == "save") save = true;
+  if (which == "copy") copy = true;
+  if (which == "both") { save = true; copy = true; }
+  var state_str =               "~*~*~*~*~*~* Search box:" + String.fromCharCode(13) + document.getElementById("search_box").value + String.fromCharCode(13);
+      state_str = state_str + "~*~*~*~*~*~* Url box:" + String.fromCharCode(13) + document.getElementById("url_box").value + String.fromCharCode(13);
+      state_str = state_str + "~*~*~*~*~*~* Test box:" + String.fromCharCode(13) + document.getElementById("test_box").value + String.fromCharCode(13);
+ 
+  if (copy) copy_string_to_clipboard(state_str);
+  if (save) save_state("un-live_newtab_state.txt", state_str);
+}
+function save_state(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+function append_to_test_area(box_id){
+    var original_focus_element = document.activeElement;
+    var testbox = document.getElementById("test_box");
+    remove_trailing_CRs(testbox.value);  // sets nremoved_global without changing testbox text
+    var start = testbox.value.length - nremoved_global; //where to insert the new text
+    var temp_str =  testbox.value.substring(0, start );
+    if (testbox.value.length != 0) temp_str =  temp_str + String.fromCharCode(13);  // prevents awkward look with a starting CR
+    testbox.value = temp_str + document.getElementById(box_id).value + testbox.value.substring(start);
+
+    // Add CR "for comfort" if needed.  (It feels better if you can click and readily get a spot where you can paste into a new line without having to go through the trouble of adding a CR)
+    var last = testbox.value.substring(testbox.value.length-1, testbox.value.length);
+    if( !(last == String.fromCharCode(10) || last == String.fromCharCode(13)) )  add_CR("test_box"); 
+
+    // Ideally, return focus to its original element just before the click, but that's tricky because the button gets focus when clicked.
+    //  So for now, just give it to the box that was copied from.
+    document.getElementById(box_id).focus();
+
+    return;
+    }
+
+</script>
+
