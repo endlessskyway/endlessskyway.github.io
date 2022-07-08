@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<body>
+</br>
+<center>
+<a href="index.html">&lt;&lt; Home&nbsp;Page</a>
+&nbsp;
+<a href="contact.html">Contact</a>
+&nbsp;
+<a href="more_screenshots.html">Screenshots</a>
+&nbsp;
+<a href="./UFS_help.html">Help&nbsp;and&nbsp;Instructions</a>
+&nbsp;
+<a target = "_blank" href="http://www.youtube.com/playlist?list=PLcUC5KvBSoCpEwoiRqs8RVizGTJPvGnpD">Video&nbsp;Tutorial</a>
+&nbsp;
+<a href="./2010/05/space-elevator-to-low-orbit.html">Other&nbsp;Posts</a>
+&nbsp;
+<a href="./u-fly-it-satellite-and-space-elevator.html">Start&nbsp;Simulator</a>
+</center>
+<br>
+<br>
+<DIV STYLE="font-family: Courier New; 
+font-size: 24px; color: black">
+<!--<center>RANDOMIZED TEAM SELECTION<br>by Endlessskyway (Alpha version)</center>-->
+<b>RANDOMIZED TEAM SELECTION</b>&nbsp;(Alpha version)
+<div><small>by Endlessskyway</small></div>
+</DIV>
+</br>
+<!--<div><big>RANDOMIZED TEAM SELECTION</big></div>-->
+<!--<div><big>RANDOMIZED TEAM SELECTION</big></div>-->
+<div STYLE="font-family: Courier New; font-size: 24px; color: black" id="people_teamsize_label"></div>
+<input type="button" style="background-color:#808; color:#fff;" onclick="change_number_of_people(1)" value="Increase number of people" />&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="button" style="background-color:#00f; color:#fff;" onclick="change_min_teamsize(1)" value="Increase minimum team size" /></br>
+<input type="button" style="background-color:#808; color:#fff;" onclick="change_number_of_people(-1)" value="Decrease number of people" />&nbsp;&nbsp;
+<input type="button" style="background-color:#00f; color:#fff;" onclick="change_min_teamsize(-1)" value="Decrease minimum team size" />
+<input type="button" style="background-color:#000; color:#fff;" onclick="randomize()" value="New Randomization" /></br>
+
+
+<p STYLE="font-family: Courier New; font-size: 18px; color: black" id="arrays_string_id"></p>
+<p STYLE="font-family: Courier New; font-size: 18px; color: black" id="assignment_string_id"></p>
+<p STYLE="font-family: Courier New; font-size: 18px; color: black" id="teamname_pool_string_id"></p>
+
+
+<script type="text/javascript">
+var max_number_of_people = 100;
+var max_number_of_teams = 100;
+var min_number_of_people = 0;
+var max_min_teamsize = 100;
+var min_min_teamsize = 2;
+var number_of_people = 16;  // start value
+var min_teamsize = 4;  // start value
+
+var assigned_team_for_a_person = new Array();
+var number_in_a_team = new Array();
+var target_number_for_team = new Array();
+
+// teamname assignments
+// &#09; is an html tab
+//var teamname_pool = new Array("Splorg", "Looplab", "Eggmode", "Chucknology", "Digisol", "Chillpal", "Sasaroo", "Zapster", "Treelop", "Duzafizz", "Ahoy-wut", "Yoffa", "Team A", "Team B", "Team C", "Team D", "Specific Strength", "Yield Strength", "Load Factor", "Inertial Force", "Pseudo Force", "Strong Force", "Nuclear Force", "Electrostatic Force", "Magnetic Force", "Weak Force", "Reynolds Number", "Static Stability", "Dihedral Effect");
+var teamname_pool = new Array("Splorg", "Looplab", "Eggmode", "Chucknology", "Digisol", "Chillpal", "Sasaroo", "Zapster", "Treelop", "Duzafizz", "Ahoy-wut", "Yoffa", "Team A", "Team B", "Team C", "Team D", "Specific Strength", "Yield Strength", "Load Factor", "Inertial Force", "Pseudo Force", "Strong Force", "Nuclear Force", "Electrostatic Force", "Magnetic Force", "Weak Force", "Reynolds Number", "Static Stability", "Dihedral Effect");
+
+//var teamname_pool = new Array("Splorg","Looplab","Eggmode","Chucknology","Digisol","Chillpal","Sasaroo","Zapster");
+//var teamname_pool = new Array("Splorg","Looplab","Eggmode","Chucknology");
+var teamname_pool_length = teamname_pool.length; 
+var teamname_pool_string = "";
+function generate_teamname_pool_string() {
+    teamname_pool_string = "<br>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>List of team names selected from:";
+    for (i=0; i<teamname_pool_length; i++) {
+        teamname_pool_string = teamname_pool_string + "<br>&nbsp;&nbsp;" + teamname_pool[i];
+        console.log("AAAAAAAAAAAAAAAAAAAAAgenerate_teamname_pool_string()" + i + " " + teamname_pool[i]);
+        }
+    return ;
+    }
+generate_teamname_pool_string();
+
+var teamname = new Array();  // list of names actually assigned to the team number
+
+// "background data"
+var n_teams = 0; // Math.floor(number_of_people/min_team_size);
+var remainder = 0; //number_of_people-(n_teams * min_team_size);
+var n_minsized_teams = 0; // n_teams - remainder;
+
+var arrays_string;
+var assignments_string;
+
+var people_minteamsize_string = " "; //set_people_minteamsize_string();
+function set_people_minteamsize_string() {
+    console.log("set_people_minteamsize_string")
+    people_minteamsize_string =  "Number of people = " + number_of_people + "&nbsp;&nbsp;&nbsp;&nbsp;"
+    people_minteamsize_string =  people_minteamsize_string + "Minimum teamsize = " + min_teamsize  + "<br>"
+//    people_minteamsize_string =  people_minteamsize_string + "<br>"
+    people_minteamsize_string =  people_minteamsize_string + "Number of teams = " + n_teams + "&nbsp;&nbsp;&nbsp;&nbsp;"
+    people_minteamsize_string =  people_minteamsize_string + "Number of teams with extras = "+ remainder + "&nbsp;&nbsp;&nbsp;&nbsp;"
+    people_minteamsize_string =  people_minteamsize_string + "Number of min-sized teams = " + n_minsized_teams + "<br>"
+}
+
+
+var team_number_index;
+var available_names = new Array();
+var teamname_pool_index = 0;
+var boolean_set_value;
+function set_available_names(boolean_set_value) {
+    for (i=0; i<teamname_pool_length; i++) {
+        available_names[i] = boolean_set_value;
+        console.log("AAAAAAAAAAAAAAAAAAAAAset_available_names(boolean_set_value)" + i + " " + boolean_set_value);
+        }
+    return teamname_pool_length;
+    } // set all to specified value and return number available
+
+
+function pick_teamname_from_pool(team_number_index) { //team_number_index is the team number for which a name is being sought (one-based index)
+    if (team_number_index>teamname_pool_length) return "-" + team_number_index + "-"; 
+
+      //  console.log("pick_teamname_from_pool(team_number_index)   team_number_index = " + team_number_index);
+
+    if (team_number_index<1) {
+        console.log("RUNTIME ERROR: pick_teamname_from_pool(team_number_index) was given a team number out of range");
+        team_number_index=99999;
+        }
+    teamname_pool_index = Math.floor(Math.random()*teamname_pool_length); // pick one (Note the zero-based index for the teamname_pool array)
+    
+    console.log("BBBBBBBBBBBBBBBpick_teamname_from_pool(team_number_index)" + i + " " + teamname_pool_index);
+
+    for (i=0; i<teamname_pool_length; i++)
+    console.log("pick_teamname_from_pool(team_number_index)  STATUS OF AVAILABLE NAMES" + i + " " +  available_names[i]);
+    console.log("(team_number_index --- BEFORE WHILE)" + i + " " +  team_number_index);
+    while (available_names[teamname_pool_index] == false) {  // is it's taken, pick the next that's not taken
+//        teamname_pool_index = teamname_pool_index + 1;
+//        if (teamname_pool_index >= teamname_pool_length) teamname_pool_index = 0 // remember the zero-based index for this
+        teamname_pool_index = Math.floor(Math.random()*teamname_pool_length); // pick one (Note the zero-based index for the teamname_pool array)
+        console.log("(team_number_index) IN WHILE " + i + " " +  available_names[teamname_pool_index]);
+
+        };
+    available_names[teamname_pool_index] = false;
+    return teamname_pool[teamname_pool_index];
+    //if (team_number_index<=teamname_pool_length) return teamname_pool[teamname_pool_index];
+    //var tempstring = " " + pick_teamname_from_pool_index + " ";
+    }
+
+
+function randomize() {
+    console.log("randomize")
+    var i,j,k;
+    for (i = 0; i<number_of_people+5; i++) assigned_team_for_a_person[i] = 0; // initialize
+    for (i = 0; i<n_teams+5; i++) number_in_a_team[i] = 0; // initialize
+
+    // assign names to teams
+    for (i = 0; i<n_teams+5; i++) teamname[i] = "no name assigned (error)"; // initialize list of names assigned to the team number
+    set_available_names(true); // make all the names available again
+    for (i = 1; i<=n_teams; i++) teamname[i] = pick_teamname_from_pool(i);
+
+    // figure out how many should be in each team, (what to do with the extras)
+    for (i = 1; i<=n_teams; i++) {
+         target_number_for_team[i] = min_teamsize;
+         if (i<=remainder) target_number_for_team[i] = min_teamsize + 1; // we just assign the extras to some team which then gets more than the minimum number.
+         };
+
+    assignments_string = "[ Person | Assigned Team Number | Assigned Team Name]<br>"
+    for (i = 1; i<=number_of_people; i++) {
+        temp_team = Math.floor(Math.random()*n_teams)+1;
+        // keep trying until you find a team that isn't full
+        while (number_in_a_team[temp_team] >= target_number_for_team[temp_team]) {
+            // temp_team = Math.floor(Math.random()*n_teams)+1; // more computational than the simpler "try the next one" method below.
+
+            // Instead, cycle through the team numbers looking for one that's not full.
+            // I'm pretty sure this is still random because the starting point was random and the next available
+            // is unpredictable (a function of all the previous random drawings)
+           temp_team = temp_team + 1;  if (temp_team>n_teams) temp_team = 1;
+           }
+
+        assigned_team_for_a_person[i] = temp_team;
+        number_in_a_team[temp_team] = number_in_a_team[temp_team] + 1;
+        assignments_string = assignments_string + "[&nbsp;" + i + "&nbsp;|&nbsp;" +  assigned_team_for_a_person[i] + "&nbsp;|&nbsp;"  + teamname[temp_team]+ "&nbsp;]<br>";
+        }
+    document.getElementById("assignment_string_id").innerHTML = assignments_string;
+
+    // report on actual number in each team
+    arrays_string = "[ Team number | Team name | Target number of people to be assigned | Number of people ACTUALLY assigned  ] " + "(teamname_pool.length = " + teamname_pool.length + ")<br>";
+    console.log("randomize, arrays_string")
+
+    for (i = 1; i<=n_teams; i++) {
+        console.log("randomize, arrays_string loop", i)
+        arrays_string =  arrays_string + "[&nbsp;" + i + "&nbsp;|&nbsp;" + teamname[i] + "&nbsp;|&nbsp;" + target_number_for_team[i] + "&nbsp;|&nbsp;" +  number_in_a_team[i] + " ]";
+        if  (target_number_for_team[i] != number_in_a_team[i]) arrays_string =  arrays_string + " ERROR: Number of people assigned to this team is not equal to the target number.";
+        arrays_string =  arrays_string + "<br>";
+        };
+    document.getElementById("arrays_string_id").innerHTML = arrays_string;
+    }
+
+function recompute_background_data() {
+    console.log("recompute_background_data")
+    n_teams = Math.floor(number_of_people/min_teamsize);
+    remainder = number_of_people-(n_teams * min_teamsize);
+    n_minsized_teams = n_teams - remainder;
+    }
+
+function change_number_of_people(increment) {
+    console.log("change_number_of_people" +  ", increment = "  + increment)
+    number_of_people = number_of_people + increment;
+    if (number_of_people >= max_number_of_people)  {number_of_people = max_number_of_people;}
+    if (number_of_people <= min_number_of_people) {number_of_people = min_number_of_people;}
+    recompute_background_data();
+    if (n_minsized_teams<0) change_number_of_people(1); // RECURSIVE!!!  (detects error when minsize>(numberofpeople/2)   (DOESN'T WORK!!!!!)
+    set_people_minteamsize_string();
+    document.getElementById("people_teamsize_label").innerHTML = people_minteamsize_string;
+    randomize();
+    }
+
+function change_min_teamsize(increment) {
+    console.log("change_min_teamsize" + ", increment = " + increment)
+    min_teamsize = min_teamsize + increment;
+    if (min_teamsize >= max_min_teamsize)  {min_teamsize = max_min_teamsize;}
+    if (min_teamsize <= min_min_teamsize) {min_teamsize = min_min_teamsize;}
+    recompute_background_data();
+    if (n_minsized_teams<0) change_min_teamsize(-1); // RECURSIVE!!!  (detects error when minsize>(numberofpeople/2)  (DOESN'T WORK!!!!!)
+    set_people_minteamsize_string();
+    document.getElementById("people_teamsize_label").innerHTML = people_minteamsize_string;
+    randomize();
+    }
+
+
+change_number_of_people(0);
+recompute_background_data();
+set_people_minteamsize_string();
+randomize();
+
+document.getElementById("people_teamsize_label").innerHTML = people_minteamsize_string;
+document.getElementById("teamname_pool_string_id").innerHTML = teamname_pool_string;
+document.getElementById("arrays_string_id").innerHTML = arrays_string;
+document.getElementById("assignment_string_id").innerHTML = assignments_string;
+
+
+</script>
+
+</body>
+</html> 

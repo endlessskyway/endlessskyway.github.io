@@ -1,0 +1,17 @@
+body {  background-color: #deb887; }
+.buttonText {
+  font-family: Courier New;
+  font-size: 16px;
+  color: black;
+  display:inline;
+}
+.startButtonText {
+  font-family: Courier New;
+  font-size: 16px;
+  color: black;
+  display:inline;
+  background-color: LightGreen;
+}
+input[type=number]{
+    width: 65px;
+}

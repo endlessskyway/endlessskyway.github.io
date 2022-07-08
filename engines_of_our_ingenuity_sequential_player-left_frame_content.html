@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sequential Player for Engines of Our Ingenuity</title>
+<link href="sequential_player_main_stylesheet.css" rel="stylesheet" type="text/css" />
+<style>
+.alinkborder {
+   border:1px dashed black;
+   text-decoration:none; }
+ </style>
+</head>
+<!-- background-color: LightGrey;-->
+<body>
+<DIV STYLE="font-family: Courier New; font-size: 26px; color: black" width="650" height="4000" align="left">
+<b>Sequential Player for</b><br>
+<a href="http://www.uh.edu/engines/" style="text-decoration:none" target="_blank"><b>Engines of Our Ingenuity</b></a> <small><small><small><small>(Alpha V0.002)</small></small></small></small>
+</DIV>
+<DIV STYLE="font-family: Courier New; font-size: 18px; color: black">
+by Endlessskyway, Feb 2016</DIV>
+
+<DIV STYLE="font-family: Courier New; font-size: 18px; color: black">
+
+<br>
+<a>Some simple html/javascript to play <b>Engines of Our<br>Ingenuity</b>
+episodes <i>in sequence</i>.  Check out their<br>site at&nbsp;<a href="http://www.uh.edu/engines/" class="alinkborder">&nbsp;www.uh.edu/engines&nbsp;</a><small><small><small>&nbsp;(opens new tab/window).<br>
+<br></small></small></small>
+
+<button CLASS=startButtonText onclick="document.getElementById('episode_mp3_file_id').play()">[Start playing now at the currently loaded episode] >></button>
+<br>
+<b>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</b><br>
+<b>Control the sequencing:</b><br>
+<form id="N_input_form_id" >
+<input type="number" CLASS=buttonText name="skipto_value_box" min="1" max="9999" ><input type="button" CLASS=buttonText onclick="skip_to_N(auto_play_after_skip_to_N)" value="Set entry as current episode" id="skip_to_submit_button_id"><small><small>("Enter" doesn't work yet, sorry.)</small></small><br>&nbsp;^<small><small>Input box also gets updated as the currently loaded episode changes.</small></small>
+</form><br>
+Toggle auto sequencing:<input type="button" CLASS=buttonText id="toggle_stop_button_id" onclick="toggle_stop();lifeloop();" value="Toggle stop" />
+<br>
+<button CLASS=buttonText onclick= "next_episode(auto_play_after_new_N,-1)">Previous Episode</button>
+<button CLASS=buttonText onclick= "next_episode(auto_play_after_new_N,+1)">Next Episode</button>
+<br>
+<b>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</b><br>
+<b>Control the play of the episode itself:</b><br>
+<a id="now_playing_label_id"></a><br>
+<br>
+<audio id="episode_mp3_file_id" src="http://www.kuhf.org/programaudio/engines/eng2_64k.mp3" preload="auto" controls style="width: 600px; ">Your browser does not support the audio element.</audio>
+<br>
+<a id="now_playing_label_id" STYLE="font-family: Courier New; font-size: 12px; color: black">(Source URL: </a><a STYLE="font-family: Courier New; font-size: 12px; color: black" id="source_string_object_id"></a><a id="now_playing_label_id" STYLE="font-family: Courier New; font-size: 12px; color: black"> )</a>
+<br>
+<b>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</b><br>
+<b>Extra augmented value! :</b><br>
+<input type="button" CLASS=buttonText id="transcript_url_button_id" onclick="open_transcript_url()" value="Open the transcript/extras page for this episode." />
+<br>
+Check out their home site at <a href="http://www.uh.edu/engines/"></b>www.uh.edu/engines</b>.</a><br>
+Open list of all 3000+ episodes at: <a href="http://www.uh.edu/engines/keywords.htm" target="_blank"><b>www.uh.edu/engines/keywords.htm</b>.</a><br>
+Open that list in frame on right: <a href="http://www.uh.edu/engines/keywords.htm" target="right_side_frame_name"><b>www.uh.edu/engines/keywords.htm</b>.</a><b> >>>></b>
+<br>Scroll down that page to follow the metadata of the episodes as they play.<br>
+<b>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</b><br>
+<b>Future improvements:</b><br>
+<small>
+I like to listen to sequential episodes as I go about my business around the house.&nbsp;&nbsp;I've made playlist files by editing UH's keywords.htm source file (linked just above).&nbsp;&nbsp;I then play that list in Winamp5.1 (the last pre-AOL version).&nbsp;&nbsp;That little trick could be done for almost any media player, just edit the html source into the right format.&nbsp;&nbsp;When I do it for Winamp5.1, there's a side effect of the playlist entries being altered as they're played.&nbsp;&nbsp;The benefit of this is that a record is made of which episodes I've already listened to.&nbsp;&nbsp;It also displays episode titles and keywords in the playlists.&nbsp;&nbsp;I want to make similar functions for this player.&nbsp;&nbsp;That's coming "soon".
+</small>
+<br>
+<br>
+<!-- BEGIN TEST -->
+<a id="filetest_string_id" STYLE="font-size: 24px; color: black"></a>
+<!-- END TEST -->
+
+<br>
+<br>
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<script type="text/javascript">
+var N = 1
+var auto_play_at_page_load = false;
+var auto_play_after_new_N = false;
+var auto_play_after_skip_to_N = false;
+
+var source_string_object = document.getElementById("source_string_object_id");
+var source_string = "http://www.kuhf.org/programaudio/engines/eng" + N + "_64k.mp3";
+source_string_object.innerHTML = source_string;
+
+var now_playing_label = document.getElementById("now_playing_label_id");
+now_playing_label.innerHTML = "Now playing number " + N + " :";
+
+var episode_mp3_file =  document.getElementById("episode_mp3_file_id");
+episode_mp3_file.src =  source_string;
+
+var transcript_url;
+var transcript_url_button = document.getElementById("transcript_url_button_id");
+var new_tab;
+function open_transcript_url() {
+    transcript_url = "http://www.uh.edu/engines/epi" + N + ".htm";
+    new_tab = window.open(transcript_url, '_blank');
+    new_tab.focus();
+    }
+
+var N_input_form = document.getElementById("N_input_form_id");
+function skip_to_N(autoplay_afterward, episode_number_passed_as_parameter) {
+   if (autoplay_afterward == undefined) autoplay_afterward = true;  //default value
+   if(episode_number_passed_as_parameter == undefined) N = Number(N_input_form.elements[0].value); else  N = episode_number_passed_as_parameter;
+   next_episode(autoplay_afterward,0);
+   return;
+}
+
+var next_episode_step;
+function next_episode(autoplay_passed_arg, next_episode_step) {
+    var new_N = false;
+    if (next_episode_step == undefined) next_episode_step == 0; //default value
+    if (next_episode_step == 0) new_N = false; else new_N = true;
+    N = N + next_episode_step;
+    if (N <1) N = 1;
+    N_input_form.elements[0].value = N
+    source_string = "http://www.kuhf.org/programaudio/engines/eng" + N + "_64k.mp3";
+    episode_mp3_file.setAttribute("src", source_string);
+    source_string_object.innerHTML = source_string;
+    if (new_page_load && auto_play_at_page_load) episode_mp3_file.play();
+      else
+        if (new_N && auto_play_after_new_N) episode_mp3_file.play();
+      else
+        if (autoplay_passed_arg) episode_mp3_file.play();
+    now_playing_label.innerHTML = "Now playing episode number " + N + " :";
+    check_if_play_ended();
+    return;}
+
+// "Life functions"
+var number_of_lifeloop_calls = 0;
+var append_string = " " + N + " " + number_of_lifeloop_calls + " ";
+var stop = true;
+var isEpisodeEnded = true;
+function check_if_play_ended() {
+    isEpisodeEnded = episode_mp3_file.ended;
+    return isEpisodeEnded;
+    }
+
+var toggle_stop_button = document.getElementById("toggle_stop_button_id");
+function toggle_stop() {
+    if (stop) stop=false; else stop=true; // the toggle
+    if (stop) toggle_stop_button.value = "Auto Sequencing is OFF"; else toggle_stop_button.value = "Auto Sequencing is ON"; 
+    return stop;
+    }
+
+function lifeloop() {
+    number_of_lifeloop_calls++;
+    append_string = " " + N + " " + number_of_lifeloop_calls + "   autoNextEpisode stopped=" + stop;
+    if (check_if_play_ended()) next_episode(true, +1);
+    if (stop==false) setTimeout(lifeloop,1000);
+    return;
+    }
+
+
+var new_page_load = true;
+skip_to_N(auto_play_at_page_load);  
+new_page_load = false;  
+stop=true;
+toggle_stop();
+function init() { lifeloop(); }
+window.onload = init;
+
+</script>
+</body>
+</html>
