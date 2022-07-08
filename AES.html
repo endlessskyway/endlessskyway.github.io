@@ -183,8 +183,34 @@ even the fact that the visible data is an encryption of something, but that's no
 our purpose here (yet).
  " /><u>[Click here to change the number of pbkdf2 iterations]</u></a> </span>
 <br>
-<textarea readonly STYLE="font-family: Courier New; font-size: 12px; color: black; background-color: #eee" id="incidentals_box" wrap="off" rows=4 cols="75"></textarea><br>
+<textarea readonly STYLE="font-family: Courier New; font-size: 12px; color: black; background-color: #eee" id="saltiv_box" wrap="off" rows=1 cols="75"></textarea>
+<input type="button" onclick="d_make_new_salt()" value="New Salt" style="background-color:#acc; color:#000; height:35px" width="48" height="48" />
+<input type="button" onclick="d_make_new_iv()" value="New IV"    style="background-color:#acc; color:#000; height:35px" width="48" height="48" />
+<br>
+<textarea readonly STYLE="font-family: Courier New; font-size: 12px; color: black; background-color: #eee" id="incidentals_box" wrap="off" rows=4 cols="75"></textarea>
 
+<input id="autosalt_toggle_button" type="button" onclick="set_autosalt('toggle')"
+title="This parameter tells whether to automatically generate
+new salt with every push of the 'Encrypt' button.
+For operations, it should always be ON.
+For experimenting to see how things work, it may be set to OFF.
+If you can't set this to OFF, it might have been defaulted unchangably
+to 'ON' directly in the html5 code (to reduce risk of accidentally having
+it OFF for operations)."
+value="INitIal_string (error)" STYLE="font-family: Courier New; font-size: 12px; color: #000; background-color: #ccc;  width:130px; height:24px"/>
+
+<input id="autoiv_toggle_button" type="button" onclick="set_autoiv('toggle')"
+title="This parameter tells whether to automatically generate a new initialization
+vector ('iv') with every push of the 'Encrypt' button.
+For operations, it should always be ON.
+For experimenting to see how things work, it may be set to OFF.
+If you can't set this to OFF, it might have been defaulted unchangably
+to 'ON' directly in the html5 code (to reduce risk of accidentally having
+it OFF for operations)."
+value="INitIal_string (error)" STYLE="font-family: Courier New; font-size: 12px; color: #000; background-color: #ccc;  width:125px; height:24px"/>
+
+
+<br>
 </div>
 
 <DIV STYLE="font-family: Courier New; font-size: 18px; color: #040"></div>
@@ -255,27 +281,49 @@ etc."/>
 <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>  -->
 <b><big>ABOUT and HELP</b></big>
 
-1) Local only.
+1) <b>Independent</b> client.
+Most of today's vaunted "end to end" encryption uses end-clients that are built
+*and updated* by the same entity that provides the channel services.  That opens
+up the opportunity for back doors, new unintended breakage of encryption, new
+*intended* breakage of encryption, etc..  An example is what Microsoft did to Skype.
+Before MS, Skype was (presumably) encrypted end-to-end where intermediaries on the
+channel could not see the data.  Now, by way of updates to <b>their</b> client, MS sees
+and *stores* all of your IM messages.  An independent client (a crude one as this is) is
+necessary to thwart those kinds of intentional update threats as well as other
+unintentional ones.  <b>Multiple</b> mutually independent clients operating in series are
+even more ideal to mitigate errors or leaks in any single encryption client.
+
+2) <b>Visible</b> client.
+An encryption end-client should be visible and verifible as to how it does its
+encryption, how it does or does not access other local or remote/internet process, etc.
+Encryption end-clients written in an interpreted language (Python, Javascript, etc.),
+and well laid out, are very much more visible in that regard.  The KISS principle, as
+well as limiting scope creep in a design, help to increase visibility inside end-client
+codes.  This client's code probably could be laid out better, and I </b>have</b>
+scope-creeped a bit as differing things spurred my interest, but it <b>is</b> in
+Javascript and so it's somewhat more visible and verifiable for that.
+
+3) Local only.
 This page is a single html5 file that runs fully locally.  No accessing the internet.
 No cookies.  No other "local storage".  No spying on you "justified" by some
 company's asinine rationalization of <b>their own</b> greater good.  Only the links
 on the top and bottom of the page try to go to the internet, but you can easily strip
 them out when you make your own local .html file from this, which you <b>should</b> do.
 
-2) Best way to run it.
+4) Best way to run it.
 Grab the source of this "page", save it into a local .html file, and it should run
 just the same.  That's actually the preferred way of running this -- to guard
 against "meddling" on your page load.  In fact, it's even better to run that local
 .html file in some alternate browser that's cut off from the internet by whatever
 means you like.
 
-3) Javascript *is* required.
+5) Javascript *is* required.
 As paranoid as you should be with regard to letting Javascript run in your
 browser, it should also be obvious that Javascript does need to be turned on in the
 browser (or tab) for this to work.  The Javascript here does nothing untoward, as
 you can verify by looking at it in the page source, which I recommend you do.
 
-4) All-in-one-file.
+6) All-in-one-file.
 The CryptoJS v3.1.2 files are pasted in this html page explicitly.  Explicit pasting
 is done so there is no accessing anything on the internet with the associated risks.
 Anyone can verify that the pasted source codes here match the v3.1.2 files from
@@ -283,7 +331,7 @@ the proper sources on the internet.  I recommend you do that.  If they don't mat
 don't use this code, because that means either this or the other is corrupted and it
 might be this.
 
-5) Format of the encrypted results.
+7) Format of the encrypted results.
 The encrypted results here have the first N characters as hex (containing the salt
 and the initialization vector), with the rest as base64.  That's less than fully
 desirable.  Any encrypted stream generally should be indistinguishable from random
@@ -291,7 +339,7 @@ noise.  The switch from hex to base64 "says something" about what's going on, bu
 since we're not trying to hide what that something is, it's okay to leave it like
 that for now.
 
-6) Size of the encrypted results.
+8) Size of the encrypted results.
 Sending out the encrypted stream in (mostly) base64 means only 6 bits per renderable
 character.  So, the base64 part of the encrypted message is going to be 6/8ths as
 dense as the original plaintext.  That is, 8/6ths the size or 33% bigger (plus a
@@ -303,13 +351,13 @@ the N hex characters at the beginning are only 4 bits each meaning that if they
 didn't need to be handlable as text, then that part of the stream would only be N/2
 bytes long.
 
-7) Dealing with the base64 "/".
+9) Dealing with the base64 "/".
 The "/" used by the base64 libraries has the disadvantage of sometimes being
 rendered along with a carriagereturn and linefeed, which can add difficulty to
 displaying and handling the resulting encoded text.  I've included some functions
 and buttons to replace the slash with a substitute character (probably "~") so the
-text can be pasted into other programs with less difficulty.  I adjusted the
-decrypt function to treat both the slash and the substitute character as a slash.
+encrypted text can be pasted into other programs with less difficulty.  I adjusted
+the decrypt function to treat both the slash and the substitute character as a slash.
 That way, decrypting encrypted text that uses the substitute character will work
 seemlessly.  I might eventually get rid of the slash completely since any encrypted
 text made by this program is only ever intended to be decrypted using this program.
@@ -318,7 +366,7 @@ default, and the slash will never show up.  If the slash does get in the box for
 input for decryption, it is interpreted the same as the substitute character and
 will work just the same.
 
-8) Formats.
+10) Formats.
 Before the string in the encryption box is decrypted, any slash-substitutes are
 first converted to actual slashes (which the decryption function expects),
 then all non-base64 characters in the string are purged from it.  This enables
