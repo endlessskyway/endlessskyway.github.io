@@ -3,13 +3,13 @@
 <html lang="en" class=" no-js lang_eng ">
 
 <head>
-<title>Un-Live Newtab</title>
+<title>UNLIVE NEWTAB</title>
 <!--Begin "embedded .css file"    -->
 <!--The .css file is "embedded" to simplify promulgation.  It's all just one file (this file).   -->
 
 <!-- #66b5ff #7967ff #E9B96E  #66cc66  STANDBY COLORS!! -->  
 <style>
-body {  background-color: #bbb;   }
+body {  background-color: #f95;   }
 
 .buttonText {
   font-family: Courier New;
@@ -50,7 +50,7 @@ value="INitIal_string (error)" STYLE="font-family: Courier New; font-size: 12px;
 <!--<input type="button" onclick="paste('search_box')" value="paste" STYLE="height:26px"/> -->
 <input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_selected_text('search_box')" value="Del" />
 <input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_unselected_text('search_box')" value="Trim" />
-<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="clear_register('search_box')" value="Clear box" />
+<input type="button" style="background-color:#eee; color:#000; height:26px" onclick="clear_register('search_box')" value="Clear box" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <!--<input type="button" onclick="rid_trailing_CRs('search_box')" value="rid_trailing_CRs('search_box')" STYLE="height:26px"/> -->
 <input type="button" onclick="append_to_test_area('search_box')" id="append_button_search" value="Append to test" style="background-color:#088; color:#fff; height:26px"/>
@@ -65,8 +65,9 @@ value="INitIal_string (error)" STYLE="font-family: Courier New; font-size: 12px;
 <textarea id="search_box"  autofocus="autofocus" onkeypress="go_on_Enter(event, 'search_box'); " STYLE="font-family: Courier New; font-size: 18px; color: #000; background-color: #eee"
 placeholder="Search box" rows="2" cols="91" wrap="on" title = "Enter your search text here." ></textarea>
 <br>
-<input type="button" onclick="searcho('SP'); if(autogo_global)go();" value="Startpage URL + AutoGO" STYLE="background-color:#ffa; color:#000; width:700px; height:50px" title="Form the URL, then either [stop] or [go on to the URL] depending on the 'autoGO' state." />
-<input type="button" onclick="searcho('DDG'); if(autogo_global)go();" value="DDG URL + AutoGO" STYLE="background-color:#ffa; color:#000; width:150px; height:50px" title="Form the URL, then either [stop] or [go on to the URL] depending on the 'autoGO' state."/>
+<input type="button" onclick="searcho('DDG'); if(autogo_global)go();" value="Duck Duck Go URL + AutoGO" STYLE="background-color:#ffa; color:#000; width:450px; height:50px" title="Form the URL, then either [stop] or [go on to the URL] depending on the 'autoGO' state." />
+<input type="button" onclick="searcho('SP'); if(autogo_global)go();" value="Startpage URL + AutoGO" STYLE="background-color:#ffa; color:#000; width:200px; height:50px" title="Form the URL, then either [stop] or [go on to the URL] depending on the 'autoGO' state."/>
+<input type="button" onclick="searcho('WP'); if(autogo_global)go();" value="Wikipedia URL + AutoGO" STYLE="background-color:#ffa; color:#000; width:200px; height:50px" title="Form the URL, then either [stop] or [go on to the URL] depending on the 'autoGO' state."/>
 <input type="button" onclick="searcho('YT');" value="YT URL" STYLE="background-color:#ffa; color:#000; width:100px; height:50px" title="Form the URL, then [stop]."/>
 <input type="button" onclick="searcho('GOG')" value="NO!" STYLE="width:50px" title="Noooooooo!!!"/>
 <br>
@@ -79,11 +80,12 @@ placeholder="Search box" rows="2" cols="91" wrap="on" title = "Enter your search
 <!--<input type="button" onclick="paste('url_box')" value="paste" STYLE="height:26px"/> -->
 <input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_selected_text('url_box')" value="Del" />
 <input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_unselected_text('url_box')" value="Trim" />
-<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="clear_register('url_box')" value="Clear box"  />
+<input type="button" style="background-color:#eee; color:#000; height:26px" onclick="clear_register('url_box')" value="Clear box" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type="button" onclick="append_to_test_area('url_box')" value="Append to test" style="background-color:#088; color:#fff; height:26px"/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="button" style="background-color:#ffa; color:#000; width:420px; height:35px" onclick="go()" value="GO"  />
+<input type="button" style="background-color:#ffa; color:#000; width:200px; height:35px" onclick="go()" value="GO"  />
+<input type="button" style="background-color:#ffa; color:#000; width:210px; height:35px" onclick="go_sametab()" value="GO (same tab)"  />
 <br>
 <textarea id="url_box"  placeholder="URL box"  STYLE="font-family: Courier New; font-size: 18px; color: #000; background-color: #eee"
 rows="2" cols="91" wrap="on" title = "The formatted URL" ></textarea>
@@ -97,7 +99,7 @@ rows="2" cols="91" wrap="on" title = "The formatted URL" ></textarea>
 <!--<input type="button" onclick="paste('test_box')" value="paste" STYLE="height:26px"/> -->
 <input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_selected_text('test_box')" value="Del" />
 <input type="button" style="background-color:#088; color:#fff; height:26px" onclick="delete_unselected_text('test_box')" value="Trim" />
-<input type="button" style="background-color:#088; color:#fff; height:26px" onclick="clear_register('test_box')" value="Clear box"  />
+<input type="button" style="background-color:#eee; color:#000; height:26px" onclick="clear_register('test_box')" value="Clear box" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type="button" style="background-color:#088; color:#fff; height:26px" onclick="add_CR('test_box')" value="add CR"  STYLE="width:70px; height:35px"/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -132,10 +134,12 @@ var gonewtab_global = true; // indicates whether to "GO" to a new tabe or the sa
 set_gonewtab("true"); // sets up default and writes the button text accordingly
 
 function searcho(engine){
-    var lead = "https://www.startpage.com/sp/search?q="; // default = Startpage.com
+    var lead = "https://duckduckgo.com/?q="; // default = duckduckgo.com
     var tail = "";
     if (engine == "SP") { lead = "https://www.startpage.com/sp/search?q="; tail = ""; }
     if (engine == "DDG") { lead = "https://duckduckgo.com/?q="; tail = "&ia=web"; }
+//    if (engine == "WP") { lead = "https://en.wikipedia.org/w/index.php?search="; tail = ""; }
+    if (engine == "WP") { lead = "https://en.wikipedia.org/w/index.php?search="; tail = "&title=Special%3ASearch&go=Go&ns0=1"; } // tail may be blank, but this is the one that the search box forms (less change of fingerprinting I think)
     if (engine == "YT") lead = "https://www.youtube.com/results?search_query=";
     if (engine == "GOG") lead = "https://www.google.com/search?q=";
 //    if (engine == "SP") lead = "https://www.startpage.com/do/asearch?q=";
@@ -163,6 +167,15 @@ function go(){
     return;
     }
 
+function go_sametab(){
+    var in_data_from_form = document.getElementById("url_box").value;
+//    if (gonewtab_global)
+//        { window.open(in_data_from_form); } // in new tab
+//        else
+        { window.open(in_data_from_form,"_self"); }  // in same tab
+    return;
+    }
+
 function go_on_Enter(event, box_id) {
     if (box_id != "search_box") return;
     var key;
@@ -175,7 +188,8 @@ function go_on_Enter(event, box_id) {
       }
     // check for "enter"
     if (key == 13 || key == 10) { 
-       searcho("SP");
+       //searcho("SP");
+       searcho("DDG");
        if(autogo_global) go();  }
     return;
     }
@@ -357,4 +371,3 @@ function append_to_test_area(box_id){
     }
 
 </script>
-
