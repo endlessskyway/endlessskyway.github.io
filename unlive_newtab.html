@@ -7,9 +7,9 @@
 <!--Begin "embedded .css file"    -->
 <!--The .css file is "embedded" to simplify promulgation.  It's all just one file (this file).   -->
 
-<!-- #66b5ff #7967ff #E9B96E  #66cc66  STANDBY COLORS!! -->  
+<!-- #66b5ff #7967ff #E9B96E  #66cc66  #f95  #6BB STANDBY COLORS!! -->  
 <style>
-body {  background-color: #f95;   }
+body {  background-color: #99B;   }
 
 .buttonText {
   font-family: Courier New;
@@ -137,7 +137,7 @@ function searcho(engine){
     var lead = "https://duckduckgo.com/?q="; // default = duckduckgo.com
     var tail = "";
     if (engine == "SP") { lead = "https://www.startpage.com/sp/search?q="; tail = ""; }
-    if (engine == "DDG") { lead = "https://duckduckgo.com/?q="; tail = "&ia=web"; }
+    if (engine == "DDG") { lead = "https://duckduckgo.com/?q="; tail = ""; }  // previously  tail = "&ia=web";
 //    if (engine == "WP") { lead = "https://en.wikipedia.org/w/index.php?search="; tail = ""; }
     if (engine == "WP") { lead = "https://en.wikipedia.org/w/index.php?search="; tail = "&title=Special%3ASearch&go=Go&ns0=1"; } // tail may be blank, but this is the one that the search box forms (less change of fingerprinting I think)
     if (engine == "YT") lead = "https://www.youtube.com/results?search_query=";
